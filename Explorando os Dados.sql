@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 
 Sakila for Microsoft SQL Server is a port of the Sakila example database available for MySQL, which was originally developed by Mike Hillyer of the MySQL AB documentation team. 
@@ -11,6 +12,8 @@ http://www.etl-tools.com
 */
 
 
+=======
+>>>>>>> c036f85d1afd4216b9daca1720e0a9f6c26fc6d1
 -- Mostrar todas as tabelas da base Sakila
 SELECT table_name 
 FROM INFORMATION_SCHEMA.TABLES 
