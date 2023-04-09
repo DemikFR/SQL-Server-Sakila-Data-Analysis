@@ -113,11 +113,11 @@ Esta tabela tem por objetivo guardar os clientes de cada loja, cada um receberá
 
 #### Tabela Category
 
-Tabela para armazenar os gêneros dos filmes, por exemplo: ação, comédia, etc. 
+Esta tabela serve para armazenar os gêneros dos filmes, por exemplo: ação, comédia, etc. 
 
 #### Tabela Film
 
-Tabela tem a finalidade de armazenar informações dos filmes, bem como nome, sinopse e data de lançamento. Além disso ela contém informações comercial do filme, como 'rental duration' que é o tempo de duração do contrato, 'rental rate' que é a taxa fixa do aluguel e o 'replacement cost' que é a taxa para o cliente trocar de filme.
+Esta tabela tem a finalidade de armazenar informações dos filmes, bem como nome, sinopse e data de lançamento. Além disso ela contém informações comercial do filme, como 'rental duration' que é o tempo de duração do contrato, 'rental rate' que é a taxa fixa do aluguel e o 'replacement cost' que é a taxa para o cliente trocar de filme.
 
 #### Tabela Film Actor, film category, film text
 
@@ -156,7 +156,7 @@ Tabela que tem por finalidade armazenar a informação e confirmação do pagame
 <!-- Análise para o Negócio -->
 ## Análise do Negócio
 
-Para realizar a análise, foram feitas algumas perguntas de negócios com base nos dados disponíveis, cada uma foi repondida conforme a sua consulta SQL, conforme será demonstrado neste tópico.
+Para realizar a análise, foram feitas algumas perguntas de negócios com base nos dados disponíveis, cada uma foi repondida conforme a sua consulta SQL mostrada ao longo deste tópico.
 
 ### Quais foram os 5 gêneros mais alugados?
 
@@ -322,7 +322,7 @@ Resultado:
 
 ### Quem é o ator que tem mais filmes alugados?
 
-Com essa pergunta, a equipe de negócios saberá quem é o ator mais famoso entre os seus cliente, podendo assim, adquirir mais produtos do mesmo.
+Com essa pergunta, a equipe de negócios saberá quem é o ator mais famoso entre os seus clientes, podendo assim, adquirir mais produtos do mesmo.
 
 Após a consulta realizada abaixo, constatou-se que <b>Susan Davis</b> foi a atriz que teve mais filmes alugados, com um total de 825 locações, tornando-a a mais famosa entre os clientes.
 
@@ -457,9 +457,6 @@ O resultado obtido foi:
 |---------------|-----------------|-------------|
 | 2		| Jon Stephens	  | 33726.77	|
 | 1		| Mike Hillyer	  | 33679.79	|
-
-
-### Qual foi o lucro médio de cada ano?
 
 
 
