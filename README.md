@@ -5,7 +5,7 @@
   <h1 align="center">Análise da Base de Dados Sakila</h1>
 
   <p align="center">
-    Análise de dados para negócios da base de dados Sakila.
+    Análise de dados para negócios da base de dados de uma locadora de filmes.
   </p>
 </div>
 
@@ -28,7 +28,21 @@
         <li><a href="#resumo-das-tabelas-e-campos-específicos">Resumo das Tabelas e Campos Específicos</a></li>
       </ul>  
     </li>
-    <li><a href="#analise-do-negocio">Análise do Negócio</a></li>
+    <li>
+      <a href="#análise-do-negócio">Análise do Negócio</a>
+      <ul>
+        <li><a href="#quais-foram-os-5-gêneros-mais-alugados">Quais foram os 5 gêneros mais alugados?</a></li>
+        <li><a href="#existe-alguma-possibilidade-desses-gêneros-serem-os-mais-alugados-por-terem-mais-filmes">Existe alguma possibilidade desses gêneros serem os mais alugados por terem mais filmes?</a></li>
+        <li><a href="#quais-foram-os-5-filmes-mais-alugados">Quais foram os 5 filmes mais alugados?</a></li>
+        <li><a href="#quais-foram-os-5-filmes-menos-alugados">Quais foram os 5 filmes menos alugados?</a></li>
+        <li><a href="#existe-algum-filme-que-não-foi-alugado">Existe algum filme que não foi alugado?</a></li>
+        <li><a href="#por-ordem-decrescente-qual-foi-o-lucro-que-cada-loja-recebeu">Por ordem decrescente, qual foi o lucro que cada loja recebeu?</a></li>
+        <li><a href="#quem-são-os-10-maiores-clientes">Quem são os 10 maiores clientes?</a></li>
+        <li><a href="#quais-são-as-cidades-que-os-10-maiores-clientes-residem">Quais são as cidades que os 10 maiores clientes residem?</a></li>
+        <li><a href="#quem-é-o-ator-que-tem-mais-filmes-alugados">Quem é o ator que tem mais filmes alugados?</a></li>
+        <li><a href="#qual-foi-o-lucro-médio-de-cada-ano">Existe algum filme que não foi alugado?</a></li>
+      </ul> 
+    </li>
     <li><a href="#agradecimentos">Agradecimentos</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -141,34 +155,224 @@ Tabela que tem por finalidade armazenar a informação e confirmação do pagame
 <!-- Análise para o Negócio -->
 ## Análise do Negócio
 
-Para efeito de análise, foram feitas algumas perguntas acerca dos dados disponíveis, conforme abaixo:
+Para realizar a análise, foram feitas algumas perguntas de negócios com base nos dados disponíveis, cada uma foi repondida conforme a sua consulta SQL, conforme será demonstrado neste tópico.
 
-#### Quais foram os 5 gêneros mais alugados?
+### Quais foram os 5 gêneros mais alugados?
 
 Essa pergunta será útil para a equipe de negócios identificar o perfil dos seus clientes, pois sabendo disso, poderá ser tomada uma melhor decisão sobre quais filmes deverão adquirir em um próximo investimento.
 
-#### Existe alguma possibilidade desses gêneros serem os mais alugados por terem mais filmes?
+Os gêneros de filmes que mais vendem são: 
 
-#### Quais foram os 5 filmes mais alugados?
+|genero_filme   | alugueis |
+|---------------|----------|
+|Sports	        | 1179     |
+|Animation	    | 1166     |
+|Action	        | 1112     |
+|Sci-Fi	        | 1101     |
+|Family	        | 1096     |
 
-#### Quais são os 5 filmes menos alugados?
+Para ter o resultado acima, foi necessário realizar a seguinte consulta no SQL Server:
 
-#### Existe algum filme que não foi alugado?
+```sql
+SELECT TOP 5 c.name genero_filme, COUNT(r.rental_id) alugueis
+FROM [dbo].[category] c
+INNER JOIN [dbo].[film_category] fc ON c.category_id = fc.category_id
+INNER JOIN [dbo].[film] f ON fc.film_id = f.film_id
+INNER JOIN [dbo].[inventory] i ON f.film_id = i.film_id
+INNER JOIN [dbo].[rental] r ON i.inventory_id = r.inventory_id
+GROUP BY c.name
+ORDER BY alugueis DESC
+```
 
-#### Por ordem crescente, qual foi o lucro que cada loja recebeu?
 
-#### Quais são os 10 maiores clientes?
+### Existe alguma possibilidade desses gêneros serem os mais alugados por terem mais filmes?
 
-#### Quais as cidades que os 10 maiores clientes residem?
+Se caso, essa possibilidade ser real, é possível que aumentando as opções dos outros gêneros, aumente as vendas de cada gênero.
 
-#### Quem é o ator que tem mais filmes alugados?
+Para reponder essa pergunta, foi necessário usar a Correlação de Pearson que é uma medida estatística para verificar se uma variável tem relação com a outra, no caso, se a quantidade de alugueis tem relação com a quantidade de filmes por gênero disponíveis no estoque. A correlação deve retornar um valor de -1 a 1, sendo que, basicamente, se quanto mais perto do número inteiro estiver, maior é a correlação, caso estiver próximo de 0, menor é a correlação ou não existe.
 
-#### Qual foi o lucro médio de cada ano?
+```sql
+WITH relatorio_generos(genero_filme, alugueis, filmes)
+AS
+(
+SELECT c.name genero_filme, COUNT(r.rental_id) alugueis, COUNT(DISTINCT fc.film_id) filmes
+FROM [dbo].[category] c
+INNER JOIN [dbo].[film_category] fc ON c.category_id = fc.category_id
+INNER JOIN [dbo].[film] f ON fc.film_id = f.film_id
+LEFT JOIN [dbo].[inventory] i ON f.film_id = i.film_id
+LEFT JOIN [dbo].[rental] r ON i.inventory_id = r.inventory_id
+GROUP BY c.name
+)
+SELECT 
+  ROUND(
+  (
+	SUM(alugueis * filmes) - (SUM(alugueis) * SUM(filmes)) / COUNT(*)
+  )
+  / 
+  (
+    SQRT(
+      SUM(alugueis * alugueis) - (SUM(alugueis) * SUM(alugueis)) / COUNT(*)
+    ) * SQRT(
+      SUM(filmes * filmes) - (SUM(filmes) * SUM(filmes)) / COUNT(*)
+    )
+  ), 2) AS correlacao
+FROM relatorio_generos
+```
+
+O cálculo retornou o valor <b>0.79</b> que significa que existe uma correlação forte entre as variáveis. 
+
+Esse resultado sugere que há uma tendência de que os gêneros de filmes com mais títulos disponíveis no estoque também sejam mais alugados. Com base nesse resultado, a equipe de negócios pode considerar adquirir mais filmes de outros gêneros para ampliar sua oferta e atender às preferências do seu público de maneira mais abrangente.
+
+
+### Quais foram os 5 filmes mais alugados?
+
+Essa questão pode ser útil para a equipe de negócios entender quais filmes são mais procurados pelos clientes e, assim, adquirir mais títulos seguindo o mesmo padrão.
+
+Sendo assim, para extrair essa informação foi feita a seguinte query:
+
+```sql
+SELECT TOP 7 f.title AS nome_filme, c.name AS genero_filme, COUNT(r.rental_id) alugueis
+FROM [dbo].[category] c
+INNER JOIN [dbo].[film_category] fc ON c.category_id = fc.category_id
+INNER JOIN [dbo].[film] f ON fc.film_id = f.film_id
+INNER JOIN [dbo].[inventory] i ON f.film_id = i.film_id
+INNER JOIN [dbo].[rental] r ON i.inventory_id = r.inventory_id
+GROUP BY f.title, c.name
+ORDER BY alugueis DESC
+```
+
+O resultado da consulta foi: 
+
+| nome_filme              | genero_filme      | alugueis |
+| ------------------------|-------------------|----------|
+| BUCKET BROTHERHOOD	    | Travel	          | 34       |
+| ROCKETEER MOTHER	      | Foreign	          | 33       |
+| RIDGEMONT SUBMARINE     | New	              | 32       |
+| JUGGLER HARDLY	        | Animation	        | 32       |
+| GRIT CLOCKWORK	        | Games	            | 32       |
+| SCALAWAG DUCK	          | Music	            | 32       |
+| FORWARD TEMPLE	        | Games	            | 32       |
+
+Note que para melhor decisão foram considerados os empatados.
+
+
+### Quais foram os 5 filmes menos alugados?
+
+A fim de complementar a pergunta anterior, esta tem como objetivo ajudar a equipe de negócios a identificar quais padrões de filmes são menos populares entre os clientes, evitando adquirir títulos semelhantes no futuro.
+
+Para responde-la foi feita a seguinte consulta no banco:
+
+```sql
+SELECT TOP 17 f.title AS nome_filme, c.name AS genero_filme, COUNT(r.rental_id) alugueis
+FROM [dbo].[category] c
+INNER JOIN [dbo].[film_category] fc ON c.category_id = fc.category_id
+INNER JOIN [dbo].[film] f ON fc.film_id = f.film_id
+INNER JOIN [dbo].[inventory] i ON f.film_id = i.film_id
+INNER JOIN [dbo].[rental] r ON i.inventory_id = r.inventory_id
+GROUP BY f.title, c.name
+ORDER BY alugueis ASC
+```
+Os filmes com menos vendas foram:
+
+| nome_filme	        | genero_filme	 | alugueis |
+|---------------------|----------------|----------|
+| MIXED DOORS	        | Foreign	       | 4        |
+| TRAIN BUNCH	        | Horror	       | 4        |
+| HARDLY ROBBERS	    | Documentary	   | 4        |
+| PRIVATE DROP	      | Games	         | 5        |
+| INFORMER DOUBLE	    | Foreign	       | 5        |
+| BUNCH MINDS	        | Drama	         | 5        |
+| GLORY TRACY	        | Games	         | 5        |
+| MANNEQUIN WORST	    | New	           | 5        |
+| HUNTER ALTER	      | Documentary	   | 5        |
+| CONSPIRACY SPIRIT	  | Classics	     | 5        |
+| FREEDOM CLEOPATRA	  | Comedy	       | 5        |
+| MUSSOLINI SPOILERS	| Sports	       | 5        |
+| SEVEN SWARM	        | Games	         | 5        |
+| BRAVEHEART HUMAN	  | Family	       | 5        |
+| FEVER EMPIRE	      | Games	         | 5        |
+| FULL FLATLINERS	    | Children	     | 5        |
+| TRAFFIC HOBBIT	    | Travel	       | 5        |
+
+Neste caso, também foram considerados os empatados.
+
+
+### Existe algum filme que não foi alugado?
+
+Não foram encontrados filmes nessa condição, conforme a consulta abaixo: 
+
+```sql
+SELECT f.title AS nome_filme, c.name AS genero_filme, COUNT(r.rental_id) alugueis
+FROM [dbo].[category] c
+INNER JOIN [dbo].[film_category] fc ON c.category_id = fc.category_id
+INNER JOIN [dbo].[film] f ON fc.film_id = f.film_id
+INNER JOIN [dbo].[inventory] i ON f.film_id = i.film_id
+INNER JOIN [dbo].[rental] r ON i.inventory_id = r.inventory_id
+GROUP BY f.title, c.name
+HAVING COUNT(r.rental_id) = 0
+ORDER BY alugueis ASC
+```
+
+Resultado:
+
+| nome_filme	| genero_filme	| alugueis |
+|-------------|---------------|----------|
+
+
+### Quem é o ator que tem mais filmes alugados?
+
+Com essa pergunta, a equipe de negócios saberá quem é o ator mais famoso entre os seus cliente, podendo assim, adquirir mais produtos do mesmo.
+
+Após a consulta realizada abaixo, constatou-se que <b>Susan Davis</b> foi a atriz que teve mais filmes alugados, com um total de 825 locações, tornando-a a mais famosa entre os clientes.
+
+```sql
+SELECT TOP 1 a.first_name+' '+a.last_name AS nome_ator, COUNT(r.rental_id) alugueis
+FROM [dbo].[actor] a
+INNER JOIN [dbo].[film_actor] fa ON a.actor_id = fa.actor_id
+INNER JOIN [dbo].[film] f ON fa.film_id = f.film_id
+INNER JOIN [dbo].[inventory] i ON f.film_id = i.film_id
+INNER JOIN [dbo].[rental] r ON i.inventory_id = r.inventory_id
+GROUP BY a.first_name+' '+a.last_name
+ORDER BY alugueis DESC
+```
+
+
+### Quem são os 10 maiores clientes?
+
+A fim de identificar os principais clientes da locadora, foi realizada uma consulta no banco de dados para obter uma lista dos 10 clientes com maior quantidade de locações realizadas.
+
+```sql
+SELECT TOP 10 c.first_name+' '+c.last_name AS nome_cliente, COUNT(r.rental_id) alugueis
+FROM [dbo].[customer] c
+INNER JOIN [dbo].[rental] r ON c.customer_id = r.customer_id
+GROUP BY c.first_name+' '+c.last_name
+ORDER BY alugueis DESC
+```
+
+Resultado:
+| nome_cliente	    | alugueis | 
+|-------------------|----------|
+| ELEANOR HUNT	    | 46       |
+| KARL SEAL	        | 45       |
+| CLARA SHAW	      | 42       |
+| MARCIA DEAN	      | 42       |
+| TAMMY SANDERS	    | 41       |
+| SUE PETERS	      | 40       |
+| WESLEY BULL	      | 40       |
+| MARION SNYDER	    | 39       |
+| RHONDA KENNEDY	  | 39       |
+| TIM CARY	        | 39       |
+
+### Quais são as cidades que os 10 maiores clientes residem?
+
+### Por ordem decrescente, qual foi o lucro que cada loja recebeu?
+
+### Qual foi o lucro médio de cada ano?
 
 
 
 <!-- Agradecimentos -->
-## Agradecimento
+## Agradecimentos
 
 Este projeto usou a versão da base Sakila disponibilizada pelo <a href="https://github.com/jOOQ">JOOQ</a> através de seu repositório <a href="https://github.com/jOOQ/sakila">Sakila</a>.
 
