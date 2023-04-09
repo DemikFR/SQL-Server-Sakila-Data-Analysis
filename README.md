@@ -38,7 +38,8 @@
         <li><a href="#existe-algum-filme-que-não-foi-alugado">Existe algum filme que não foi alugado?</a></li>
         <li><a href="#por-ordem-decrescente-qual-foi-o-lucro-que-cada-loja-recebeu">Por ordem decrescente, qual foi o lucro que cada loja recebeu?</a></li>
         <li><a href="#quem-são-os-10-maiores-clientes">Quem são os 10 maiores clientes?</a></li>
-        <li><a href="#quais-são-as-cidades-que-os-10-maiores-clientes-residem">Quais são as cidades que os 10 maiores clientes residem?</a></li>
+        <li><a href="#quais-são-as-cidades-onde-residem-os-10-maiores-clientes">Quais são as cidades onde residem os 10 maiores clientes?</a></li>
+	<li><a href="#quais-são-as-cinco-cidades-com-o-maior-número-de-clientes-exceto-as-que-já-possuem-lojas">Quais são as cinco cidades com o maior número de clientes, exceto as que já possuem lojas?</a></li>
         <li><a href="#quem-é-o-ator-que-tem-mais-filmes-alugados">Quem é o ator que tem mais filmes alugados?</a></li>
         <li><a href="#qual-foi-o-lucro-médio-de-cada-ano">Existe algum filme que não foi alugado?</a></li>
       </ul> 
@@ -195,13 +196,13 @@ Para reponder essa pergunta, foi necessário usar a Correlação de Pearson que 
 WITH relatorio_generos(genero_filme, alugueis, filmes)
 AS
 (
-SELECT c.name genero_filme, COUNT(r.rental_id) alugueis, COUNT(DISTINCT fc.film_id) filmes
-FROM [dbo].[category] c
-INNER JOIN [dbo].[film_category] fc ON c.category_id = fc.category_id
-INNER JOIN [dbo].[film] f ON fc.film_id = f.film_id
-LEFT JOIN [dbo].[inventory] i ON f.film_id = i.film_id
-LEFT JOIN [dbo].[rental] r ON i.inventory_id = r.inventory_id
-GROUP BY c.name
+	SELECT c.name genero_filme, COUNT(r.rental_id) alugueis, COUNT(DISTINCT fc.film_id) filmes
+	FROM [dbo].[category] c
+	INNER JOIN [dbo].[film_category] fc ON c.category_id = fc.category_id
+	INNER JOIN [dbo].[film] f ON fc.film_id = f.film_id
+	LEFT JOIN [dbo].[inventory] i ON f.film_id = i.film_id
+	LEFT JOIN [dbo].[rental] r ON i.inventory_id = r.inventory_id
+	GROUP BY c.name
 )
 SELECT 
   ROUND(
@@ -363,9 +364,100 @@ Resultado:
 | RHONDA KENNEDY	  | 39       |
 | TIM CARY	        | 39       |
 
-### Quais são as cidades que os 10 maiores clientes residem?
+### Quais são as cidades onde residem os 10 maiores clientes?
+
+Será possível usar essa informação para tomar a decisão de onde poderá abrir uma próxima unidade.
+
+Para tal, a seguinte query foi realizada:
+
+```sql
+WITH top_clientes(id_cliente, alugueis)
+AS
+(
+	SELECT TOP 10 c.customer_id AS id_cliente, COUNT(r.rental_id) alugueis
+	FROM [dbo].[customer] c
+	INNER JOIN [dbo].[rental] r ON c.customer_id = r.customer_id
+	GROUP BY c.customer_id
+	ORDER BY alugueis DESC
+)
+SELECT cr.first_name+' '+cr.last_name AS nome_cliente, c.city AS cidade_cliente
+FROM [dbo].[city] c
+INNER JOIN [dbo].[address] a ON c.city_id = a.city_id
+INNER JOIN [dbo].[customer] cr ON a.address_id = cr.address_id
+INNER JOIN [top_clientes] tc ON cr.customer_id = tc.id_cliente
+```
+
+O resultado da consulta foi:
+
+| nome_cliente	 | cidade_cliente	|
+|----------------|----------------------|
+| ELEANOR HUNT	 | Saint-Denis		|
+| KARL SEAL	 | Cape Coral		|
+| CLARA SHAW	 | Molodetno		|
+| MARCIA DEAN	 | Tanza		|
+| TAMMY SANDERS	 | Changhwa		|
+| SUE PETERS	 | Changzhou		|
+| WESLEY BULL	 | Ourense (Orense)	|
+| MARION SNYDER	 | Santa Brbara dOeste	|
+| TIM CARY	 | Bijapur		|
+| RHONDA KENNEDY | Apeldoorn		|
+
+
+### Quais são as cinco cidades com o maior número de clientes, exceto as que já possuem lojas?
+
+Para complementar o resultado da pergunta anterior, foi possível identificar as cidades onde tem o maior número de clientes, em exceção das que já existem lojas, conforme a consulta abaixo:
+
+```sql
+WITH cidades_loja(id_cidade)
+AS
+(
+	SELECT c.city_id
+	FROM [dbo].[city] c
+	INNER JOIN [dbo].[address] a ON c.city_id = a.city_id
+	INNER JOIN  [dbo].[store] s ON a.address_id = s.address_id
+)
+SELECT TOP 2 c.city AS nome_cidade, COUNT(cr.customer_id) qte_clientes
+FROM [dbo].[city] c
+INNER JOIN [dbo].[address] a ON c.city_id = a.city_id
+INNER JOIN [dbo].[customer] cr ON a.address_id = cr.address_id
+LEFT JOIN [cidades_loja] cl ON c.city_id = cl.id_cidade
+GROUP BY c.city
+ORDER BY qte_clientes DESC
+```
+
+Apenas duas cidades contém mais clientes que as outras, que é 2, em todas as outras cidades cadastradas, foram constatadas apenas 1 cliente por cidade, assim, foi filtrado na consulta apenas essas duas.
+
+| nome_cidade	| qte_clientes	|
+|---------------|---------------|
+| Aurora	| 2		|
+| London	| 2		|
+
 
 ### Por ordem decrescente, qual foi o lucro que cada loja recebeu?
+
+Essa questão pode servir para a equipe de negócios analisar o desempenho de cada loja e identificar oportunidades para maximizar os lucros. 
+
+A seguinte consulta foi realizada:
+
+
+```sql
+SELECT s.store_id AS id_loja, sf.first_name+' '+sf.last_name AS nome_gerente, SUM(p.amount) lucro_total
+FROM [dbo].[store] s
+INNER JOIN [dbo].[staff] sf ON s.store_id = sf.store_id
+INNER JOIN [dbo].[inventory] i ON s.store_id = i.store_id
+INNER JOIN [dbo].[rental] r ON i.inventory_id = r.inventory_id
+INNER JOIN [dbo].[payment] p ON r.rental_id = p.rental_id
+GROUP BY s.store_id, sf.first_name+' '+sf.last_name
+ORDER BY lucro_total DESC
+```
+
+O resultado obtido foi:
+
+| id_loja	| nome_gerente	  | lucro_total	|
+|---------------|-----------------|-------------|
+| 2		| Jon Stephens	  | 33726.77	|
+| 1		| Mike Hillyer	  | 33679.79	|
+
 
 ### Qual foi o lucro médio de cada ano?
 
