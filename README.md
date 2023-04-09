@@ -28,14 +28,7 @@
         <li><a href="#resumo-das-tabelas-e-campos-específicos">Resumo das Tabelas e Campos Específicos</a></li>
       </ul>  
     </li>
-    <li>
-      <a href="#analysis-issues">Analysis Issues</a>
-      <ul>
-        <li><a href="#bar-graph">Bar Graph</a></li>
-        <li><a href="#line-graphs">Line Graph</a></li>
-        <li><a href="#word-cloud">Word Cloud</a></li>
-      </ul>  
-    </li>
+    <li><a href="#analise-do-negocio">Análise do Negócio</a></li>
     <li><a href="#agradecimentos">Agradecimentos</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -142,6 +135,35 @@ Esta tabela tem o aluguel de cada cliente, bem como o filme alugado, qual loja p
 #### Tabela Payment
 
 Tabela que tem por finalidade armazenar a informação e confirmação do pagamento da locação pelo cliente, nela conterá o valor final do aluguel, ou seja, total pago.
+
+
+
+<!-- Análise para o Negócio -->
+## Análise do Negócio
+
+Para efeito de análise, foram feitas algumas perguntas acerca dos dados disponíveis, conforme abaixo:
+
+#### Quais foram os 5 gêneros mais alugados?
+
+Essa pergunta será útil para a equipe de negócios identificar o perfil dos seus clientes, pois sabendo disso, poderá ser tomada uma melhor decisão sobre quais filmes deverão adquirir em um próximo investimento.
+
+#### Existe alguma possibilidade desses gêneros serem os mais alugados por terem mais filmes?
+
+#### Quais foram os 5 filmes mais alugados?
+
+#### Quais são os 5 filmes menos alugados?
+
+#### Existe algum filme que não foi alugado?
+
+#### Por ordem crescente, qual foi o lucro que cada loja recebeu?
+
+#### Quais são os 10 maiores clientes?
+
+#### Quais as cidades que os 10 maiores clientes residem?
+
+#### Quem é o ator que tem mais filmes alugados?
+
+#### Qual foi o lucro médio de cada ano?
 
 
 
