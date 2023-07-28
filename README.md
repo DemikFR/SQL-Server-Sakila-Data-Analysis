@@ -502,7 +502,7 @@ Todas as imagens abaixo são os slides retirados do arquivo <i>apresentacao.pptx
 
 ![Slide5](https://github.com/DemikFR/SQL-Server-Sakila-Data-Analysis/assets/102700735/c4d7c359-85a1-44d6-bd0f-e54af7725426)
 
-![Slide6](https://github.com/DemikFR/SQL-Server-Sakila-Data-Analysis/assets/102700735/48ea417f-9d1b-4351-85f2-9b01d2881850)
+![Slide6](https://github.com/DemikFR/SQL-Server-Sakila-Data-Analysis/assets/102700735/6633dd5a-27ff-40ac-9218-898973764d71)
 
 
 
