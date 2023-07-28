@@ -87,7 +87,7 @@ ORDER BY alugueis ASC
 
 
 -- Quem é o ator que tem mais filmes alugados?
-SELECT TOP 1 a.first_name+' '+a.last_name AS nome_ator, COUNT(r.rental_id) alugueis
+SELECT TOP 2 a.first_name+' '+a.last_name AS nome_ator, COUNT(r.rental_id) alugueis
 FROM [dbo].[actor] a
 INNER JOIN [dbo].[film_actor] fa ON a.actor_id = fa.actor_id
 INNER JOIN [dbo].[film] f ON fa.film_id = f.film_id
@@ -95,7 +95,6 @@ INNER JOIN [dbo].[inventory] i ON f.film_id = i.film_id
 INNER JOIN [dbo].[rental] r ON i.inventory_id = r.inventory_id
 GROUP BY a.first_name+' '+a.last_name
 ORDER BY alugueis DESC
-
 
 -- Quem são os 10 maiores clientes?
 SELECT TOP 10 c.first_name+' '+c.last_name AS nome_cliente, COUNT(r.rental_id) alugueis

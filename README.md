@@ -13,12 +13,13 @@
 
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summary>Table of Contents</summary>
+  <summary>Sumário</summary>
   <ol>
     <li>
       <a href="#sobre-o-projeto">Sobre o Projeto</a>
       <ul>
         <li><a href="#ferramentas">Ferramentas</a></li>
+	<li><a href="#etapas">Etapas</a></li>
       </ul>
     </li>
     <li><a href="#iniciar-o-projeto">Iniciar o Projeto</a></li>
@@ -41,9 +42,10 @@
         <li><a href="#quais-são-as-cidades-onde-residem-os-10-maiores-clientes">Quais são as cidades onde residem os 10 maiores clientes?</a></li>
 	<li><a href="#quais-são-as-cinco-cidades-com-o-maior-número-de-clientes-exceto-as-que-já-possuem-lojas">Quais são as cinco cidades com o maior número de clientes, exceto as que já possuem lojas?</a></li>
         <li><a href="#quem-é-o-ator-que-tem-mais-filmes-alugados">Quem é o ator que tem mais filmes alugados?</a></li>
-        <li><a href="#qual-foi-o-lucro-médio-de-cada-ano">Existe algum filme que não foi alugado?</a></li>
+        <li><a href="#por-ordem-decrescente-qual-foi-o-lucro-que-cada-loja-recebeu">Por ordem decrescente, qual foi o lucro que cada loja recebeu?</a></li>
       </ul> 
     </li>
+    <li><a href="#apresentação">Apresentação</a></li>
     <li><a href="#agradecimentos">Agradecimentos</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -61,13 +63,39 @@ Este projeto tem o objetivo de treinar e demonstrar as minhas habilidades em an�
 
 ### Ferramentas
 
-Para realizar este projeto, foi usado a seguinte ferramenta:
-
+Para realizar este projeto, foi utilizado as seguintes ferramentas:
 
 
 * [![SQL-Server][MicrosoftSQLServer.sql]][SQLServer-url]
+* [![Microsoft-Excel][MicrosoftExcel.xlsx]][MicrosoftExcel-url]
+* [![MicrosoftPowerPoint][MicrosoftPowerPoint.pptx]][MicrosoftPowerPoint-url]
 
 
+### Etapas
+
+1. Análise da Base:
+
+	Inicialmente, realizou-se uma consulta em cada tabela, com o objetivo de compreender seus atributos e relacionamentos. Essa etapa permitiu obter uma visão abrangente dos dados disponíveis.
+
+2. Levantamento de Requisitos:
+
+	Com base na análise das tabelas, foram levantados os requisitos necessários para a resolução do problema de negócio. Essa fase é fundamental para garantir que os dados extraídos sejam adequados às demandas específicas da empresa.
+
+3. Extração dos Dados:
+
+	Uma vez definidos os requisitos, procedeu-se à criação das queries para extrair os dados relevantes para a resolução do problema. A extração foi realizada de forma a obter informações necessárias para a geração de insights.
+
+4. Transferência dos Dados para o Excel:
+
+	Após a extração dos dados, estes foram transferidos para o Excel. Essa etapa permitiu uma manipulação mais eficiente dos dados, possibilitando a criação de análises detalhadas para os relatórios.
+
+5. Geração dos Relatórios:
+
+	Utilizando as informações consolidadas no Excel, foram gerados dois relatórios, apresentando os resultados obtidos. Esses relatórios constituem uma parte crucial do processo, pois fornecem insights valiosos para a compreensão do cenário atual e potenciais oportunidades de melhoria.
+
+6. Criação da Apresentação de Storytelling no PowerPoint:
+
+	Finalmente, os visuais e informações mais relevantes dos relatórios foram incorporados a uma apresentação de storytelling no PowerPoint. Essa etapa permitiu criar uma narrativa envolvente e visualmente impactante, facilitando a comunicação dos resultados e conclusões aos stakeholders e tomadores de decisão.
 
 
 <!-- Iniciar o Projeto -->
@@ -460,6 +488,24 @@ O resultado obtido foi:
 
 
 
+## Apresentação
+
+Todas as imagens abaixo são os slides retirados do arquivo <i>apresentacao.pptx</i> deste repositório.
+
+![Slide1](https://github.com/DemikFR/SQL-Server-Sakila-Data-Analysis/assets/102700735/437e3cd3-3e67-4240-853a-39eec12362ca)
+
+![Slide2](https://github.com/DemikFR/SQL-Server-Sakila-Data-Analysis/assets/102700735/3f92861f-508b-48c7-a89a-b3b1b214f66c)
+
+![Slide3](https://github.com/DemikFR/SQL-Server-Sakila-Data-Analysis/assets/102700735/02b1066d-91fb-4383-ba78-349fd72cfd77)
+
+![Slide4](https://github.com/DemikFR/SQL-Server-Sakila-Data-Analysis/assets/102700735/3e00de6e-03ec-4829-8e63-bc414dc833b1)
+
+![Slide5](https://github.com/DemikFR/SQL-Server-Sakila-Data-Analysis/assets/102700735/c4d7c359-85a1-44d6-bd0f-e54af7725426)
+
+![Slide6](https://github.com/DemikFR/SQL-Server-Sakila-Data-Analysis/assets/102700735/48ea417f-9d1b-4351-85f2-9b01d2881850)
+
+
+
 <!-- Agradecimentos -->
 ## Agradecimentos
 
@@ -487,3 +533,7 @@ Project Link: [https://github.com/DemikFR/SQL-Server-Sakila-Data-Analysis](https
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [MicrosoftSQLServer.sql]: https://img.shields.io/badge/Microsoft%20SQL%20Server-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white
 [SQLServer-url]: https://www.microsoft.com/pt-br/sql-server/sql-server-downloads
+[MicrosoftExcel.xlsx]: https://img.shields.io/badge/Microsoft_Excel-217346?style=for-the-badge&logo=microsoft-excel&logoColor=white
+[MicrosoftExcel-url]: https://www.microsoft.com/pt-br/microsoft-365/excel
+[MicrosoftPowerPoint.pptx]: https://img.shields.io/badge/Microsoft_PowerPoint-B7472A?style=for-the-badge&logo=microsoft-powerpoint&logoColor=white
+[MicrosoftPowerPoint-url]: https://www.microsoft.com/pt-br/microsoft-365/powerpoint
